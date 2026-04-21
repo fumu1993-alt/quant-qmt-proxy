@@ -79,6 +79,7 @@ class OrderRequest(BaseModel):
     order_type: OrderType = Field(OrderType.LIMIT, description="订单类型")
     volume: int = Field(..., description="数量")
     price: Optional[float] = Field(None, description="价格")
+    strategy_id: Optional[str] = Field(None, description="策略ID，用于多策略隔离")
     strategy_name: Optional[str] = Field(None, description="策略名称")
     
     @field_validator('volume')
@@ -107,6 +108,8 @@ class OrderResponse(BaseModel):
     filled_volume: int = 0
     filled_amount: float = 0.0
     average_price: Optional[float] = None
+    strategy_id: Optional[str] = None
+    strategy_name: Optional[str] = None
 
 
 class CancelOrderRequest(BaseModel):

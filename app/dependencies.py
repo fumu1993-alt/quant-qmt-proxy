@@ -23,6 +23,7 @@ security = HTTPBearer(auto_error=False)
 _data_service_instance = None
 _trading_service_instance = None
 _subscription_manager_instance = None
+_strategy_manager_instance = None
 
 
 def get_data_service(settings: Settings = Depends(get_settings)):
@@ -59,6 +60,18 @@ def get_subscription_manager(settings: Settings = Depends(get_settings)):
         _subscription_manager_instance = SubscriptionManager(settings)
     
     return _subscription_manager_instance
+
+
+def get_strategy_manager(settings: Settings = Depends(get_settings)):
+    """获取StrategyManager单例实例"""
+    global _strategy_manager_instance
+    
+    if _strategy_manager_instance is None:
+        from app.services.strategy_manager import StrategyManager
+        logger.info("初始化 StrategyManager...")
+        _strategy_manager_instance = StrategyManager()
+    
+    return _strategy_manager_instance
 
 
 async def get_api_key(
